@@ -15,3 +15,13 @@ export interface Profile {
   messengerUsername?: string;
   isCustom?: boolean;
 }
+
+export interface Reward {
+  milestone: number;
+  title: string;
+  description: string;
+  image: string;
+  quote: string;
+  rewardText: string;
+}
+

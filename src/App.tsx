@@ -18,10 +18,12 @@ import {
   AlertCircle,
   BookOpen,
   ShieldCheck,
-  X
+  X,
+  Trophy,
+  Gift
 } from "lucide-react";
-import { QUESTIONS, ENCOURAGING_MESSAGES, DEFAULT_PROFILE } from "./questions";
-import { Question, Profile } from "./types";
+import { QUESTIONS, ENCOURAGING_MESSAGES, DEFAULT_PROFILE, MILESTONE_REWARDS } from "./questions";
+import { Question, Profile, Reward } from "./types";
 import { 
   playClickSound, 
   playSuccessSound, 
@@ -49,6 +51,7 @@ export default function App() {
   // UI states
   const [copied, setCopied] = useState<boolean>(false);
   const [shareCopied, setShareCopied] = useState<boolean>(false);
+  const [unlockedReward, setUnlockedReward] = useState<Reward | null>(null);
   
   // Creator states
   const [creatorName, setCreatorName] = useState<string>("");
@@ -192,8 +195,15 @@ export default function App() {
       triggerSound("fail");
     } else if (currentQuestionIdx < QUESTIONS.length - 1) {
       // Proceed to next question
-      setCurrentQuestionIdx(currentQuestionIdx + 1);
+      const nextIdx = currentQuestionIdx + 1;
+      setCurrentQuestionIdx(nextIdx);
       setSelectedAnswerIdx(null);
+
+      // Trigger reward modal if this is a milestone
+      if (MILESTONE_REWARDS[nextIdx]) {
+        setUnlockedReward(MILESTONE_REWARDS[nextIdx]);
+        triggerSound("completion");
+      }
     } else {
       // We reached the final question.
       // If we finished and have any failure recorded, show failure. Otherwise, success!
@@ -1028,6 +1038,79 @@ export default function App() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* MILESTONE REWARD MODAL */}
+      {unlockedReward && (
+        <div className="fixed inset-0 bg-[#2c2321]/70 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-fade-in" id="modal-milestone-reward">
+          <div className="w-full max-w-md bg-[#fffdfb] border border-[#eae1dc] rounded-2xl p-6 shadow-2xl flex flex-col space-y-5 text-center relative overflow-hidden">
+            {/* Top decorative gradient bar */}
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-amber-400 via-rose-500 to-[#c85a53]" />
+            
+            {/* Trophy/Gift Icon with subtle animation */}
+            <div className="mx-auto w-16 h-16 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 shadow-sm animate-bounce">
+              <Trophy className="w-8 h-8 fill-amber-300" />
+            </div>
+
+            <div className="space-y-1">
+              <span className="inline-block px-3 py-1 bg-amber-100 text-amber-800 rounded-full text-[10px] font-black tracking-widest uppercase">
+                PALIER {unlockedReward.milestone} DÉBLOQUÉ 🎉
+              </span>
+              <h3 className="text-2xl font-serif font-black text-[#2c2321] tracking-tight">
+                {unlockedReward.title}
+              </h3>
+            </div>
+
+            {/* Unsplash Image Card */}
+            <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-[#eae1dc]">
+              <img 
+                src={unlockedReward.image} 
+                alt={unlockedReward.title}
+                className="w-full h-full object-cover select-none"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <span className="absolute bottom-2 right-2 text-[10px] text-white/90 bg-black/40 px-2 py-0.5 rounded backdrop-blur-xs font-medium">
+                Hautes-Alpes (05)
+              </span>
+            </div>
+
+            {/* Quote and Description */}
+            <p className="text-sm text-[#5c4d4a] leading-relaxed">
+              {unlockedReward.description}
+            </p>
+
+            <div className="font-serif italic text-xs text-[#6b5854] py-3.5 border-t border-b border-[#f0eae6] px-4 my-2 leading-relaxed bg-[#fcfbf9] rounded-lg">
+              {unlockedReward.quote}
+            </div>
+
+            {/* Highlighted reward card box */}
+            <div className="bg-emerald-50/70 border border-emerald-100 rounded-xl p-3.5 flex items-center gap-3 text-left">
+              <div className="p-2 rounded-lg bg-emerald-100 text-emerald-700">
+                <Gift className="w-5 h-5 fill-emerald-200" />
+              </div>
+              <div className="space-y-0.5">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800">Cadeau Virtuel Acquis</span>
+                <p className="text-xs text-emerald-900 font-semibold leading-snug">
+                  {unlockedReward.rewardText}
+                </p>
+              </div>
+            </div>
+
+            {/* Action button */}
+            <button
+              onClick={() => {
+                setUnlockedReward(null);
+                triggerSound("click");
+              }}
+              className="w-full py-3.5 px-6 rounded-xl font-bold text-white bg-gradient-to-r from-rose-500 to-[#c85a53] hover:from-rose-600 hover:to-[#b04a43] shadow-md hover:shadow-lg transition-all active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2"
+              id="btn-close-reward"
+            >
+              <span>Continuer l'aventure</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}

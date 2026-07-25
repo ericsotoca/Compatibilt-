@@ -1,4 +1,4 @@
-import { Question, Profile } from "./types";
+import { Question, Profile, Reward } from "./types";
 
 interface RawQuestion {
   id: number;
@@ -471,3 +471,47 @@ export const DEFAULT_PROFILE: Profile = {
   secretCode: "EROS-2026",
   messengerUsername: "eric.sotoca"
 };
+
+export const MILESTONE_REWARDS: { [milestone: number]: Reward } = {
+  5: {
+    milestone: 5,
+    title: "Le Col de l'Izoard ⛰️",
+    description: "Vous avez brillamment franchi le premier sommet ! Voici votre première récompense des Hautes-Alpes.",
+    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+    quote: "« La montagne nous offre le décor, à nous d'inventer l'histoire qui va avec. »",
+    rewardText: "Un badge d'Aventurier du 05 & un panorama rafraîchissant !"
+  },
+  10: {
+    milestone: 10,
+    title: "Le Lac de Serre-Ponçon 🌊",
+    description: "Déjà 10 questions ! Votre sincérité commence à payer. Installez-vous confortablement au bord de l'eau turquoise.",
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80",
+    quote: "« L'eau calme reflète la beauté de ce qui l'entoure, tout comme un cœur sincère. »",
+    rewardText: "Un chocolat chaud virtuel face aux eaux turquoise du lac !"
+  },
+  15: {
+    milestone: 15,
+    title: "La Vallée de la Clarée 🌸",
+    description: "Mi-parcours atteint ! Vous traversez l'une des vallées les plus préservées et authentiques des Hautes-Alpes.",
+    image: "https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=800&q=80",
+    quote: "« Dans la nature, tout est parfait, rien n'est pressé. »",
+    rewardText: "Une pause bien-être virtuelle : Respirez profondément et écoutez le chant des mélèzes."
+  },
+  20: {
+    milestone: 20,
+    title: "Le Massif des Écrins 🦅",
+    description: "20 questions ! Vous entrez dans la zone de haute altitude. Seuls les esprits forts et alignés parviennent ici.",
+    image: "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=800&q=80",
+    quote: "« Plus haut on monte, plus grand est le spectacle. »",
+    rewardText: "Le droit virtuel de survoler les glaciers aux côtés des aigles royaux des Écrins."
+  },
+  25: {
+    milestone: 25,
+    title: "Ciel Étoilé du Queyras ✨",
+    description: "Dernier refuge avant l'ultime étape. Le Queyras offre l'un des ciels nocturnes les plus purs d'Europe.",
+    image: "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=800&q=80",
+    quote: "« Les étoiles sont les yeux de la nuit qui veillent sur nos vœux les plus secrets. »",
+    rewardText: "Un souhait virtuel sous une pluie d'étoiles filantes haut-alpines."
+  }
+};
+
