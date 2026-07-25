@@ -1,0 +1,6 @@
+{
+  "name": "Le Défi Compatibilité",
+  "description": "Un jeu de rencontre amoureuse ludique et interactif pour tester votre compatibilité.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
