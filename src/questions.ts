@@ -1,6 +1,16 @@
 import { Question, Profile } from "./types";
 
-export const QUESTIONS: Question[] = [
+interface RawQuestion {
+  id: number;
+  title: string;
+  question: string;
+  answers: string[];
+  cCode: string;
+  importance: string;
+  level: string;
+}
+
+const RAW_QUESTIONS: RawQuestion[] = [
   {
     id: 1,
     title: "Tabac",
@@ -10,7 +20,7 @@ export const QUESTIONS: Question[] = [
       "Oui, occasionnellement",
       "Non, je ne fume pas"
     ],
-    defaultCompat: [2], // C
+    cCode: "k", // index 2 -> "k"
     importance: "Critère éliminatoire",
     level: "Niveau 1 - Facile"
   },
@@ -23,7 +33,7 @@ export const QUESTIONS: Question[] = [
       "Je bois occasionnellement dans un contexte social",
       "Je ne bois quasiment jamais"
     ],
-    defaultCompat: [1, 2], // B ou C
+    cCode: "mk", // index 1, 2 -> "mk"
     importance: "Critère important",
     level: "Niveau 2 - Facile"
   },
@@ -38,7 +48,7 @@ export const QUESTIONS: Question[] = [
       "Entre 1m65 et 1m70",
       "1m70 ou plus"
     ],
-    defaultCompat: [1, 2, 3], // De 1.55 à 1.70
+    cCode: "mkp", // index 1, 2, 3 -> "mkp"
     importance: "Critère important",
     level: "Niveau 3 - Moyen"
   },
@@ -58,7 +68,7 @@ export const QUESTIONS: Question[] = [
       "Entre 75 et 80 kg",
       "80 kg ou plus"
     ],
-    defaultCompat: [2, 3, 4], // De 45 à 60 kg
+    cCode: "kpat", // index 2, 3, 4, 5 -> "kpat"
     importance: "Critère important",
     level: "Niveau 4 - Moyen"
   },
@@ -71,7 +81,7 @@ export const QUESTIONS: Question[] = [
       "Je préfère une vie très organisée avec peu de changements",
       "Je privilégie principalement la stabilité"
     ],
-    defaultCompat: [0], // A
+    cCode: "x", // index 0 -> "x"
     importance: "Critère majeur",
     level: "Niveau 5 - Moyen"
   },
@@ -84,7 +94,7 @@ export const QUESTIONS: Question[] = [
       "Je trouve un équilibre entre travail et vie personnelle",
       "Je privilégie une vie avec beaucoup de disponibilité pour les projets et loisirs"
     ],
-    defaultCompat: [1, 2], // B ou C
+    cCode: "mk", // index 1, 2 -> "mk"
     importance: "Critère majeur",
     level: "Niveau 6 - Avancé"
   },
@@ -97,7 +107,7 @@ export const QUESTIONS: Question[] = [
       "J'aime voyager occasionnellement",
       "Je préfère rester principalement dans mon environnement habituel"
     ],
-    defaultCompat: [0, 1], // A ou B
+    cCode: "xm", // index 0, 1 -> "xm"
     importance: "Critère important",
     level: "Niveau 7 - Avancé"
   },
@@ -110,7 +120,7 @@ export const QUESTIONS: Question[] = [
       "Je m'intéresse parfois à ces sujets",
       "Ce n'est pas vraiment une priorité pour moi"
     ],
-    defaultCompat: [0], // A
+    cCode: "x", // index 0 -> "x"
     importance: "Critère majeur",
     level: "Niveau 8 - Difficile"
   },
@@ -123,7 +133,7 @@ export const QUESTIONS: Question[] = [
       "Une relation très fusionnelle avec beaucoup de présence permanente",
       "Une relation principalement basée sur le quotidien et la routine"
     ],
-    defaultCompat: [0], // A
+    cCode: "x", // index 0 -> "x"
     importance: "Critère majeur",
     level: "Niveau 9 - Difficile"
   },
@@ -136,7 +146,7 @@ export const QUESTIONS: Question[] = [
       "Une vie calme et principalement centrée sur la routine",
       "Une vie principalement consacrée au travail et aux obligations"
     ],
-    defaultCompat: [0], // A
+    cCode: "x", // index 0 -> "x"
     importance: "Critère final",
     level: "Niveau 10 - Expert"
   },
@@ -149,7 +159,7 @@ export const QUESTIONS: Question[] = [
       "Je prends du recul pour en parler calmement et de manière constructive",
       "Je préfère éviter le conflit et laisser le temps faire les choses"
     ],
-    defaultCompat: [1], // B
+    cCode: "m", // index 1 -> "m"
     importance: "Critère important",
     level: "Niveau 11 - Expert"
   },
@@ -162,7 +172,7 @@ export const QUESTIONS: Question[] = [
       "Dans une maison chaleureuse au calme, proche de la nature",
       "Un mode de vie plus flexible ou nomade, prêt(e) à déménager souvent"
     ],
-    defaultCompat: [1, 2], // B ou C
+    cCode: "mk", // index 1, 2 -> "mk"
     importance: "Critère important",
     level: "Niveau 12 - Expert"
   },
@@ -175,7 +185,7 @@ export const QUESTIONS: Question[] = [
       "J'y suis ouvert(e) et curieux(se) sans que ce soit mon unique guide",
       "Je suis une personne avant tout pragmatique, logique et rationnelle"
     ],
-    defaultCompat: [0, 1], // A ou B
+    cCode: "xm", // index 0, 1 -> "xm"
     importance: "Critère majeur",
     level: "Niveau 13 - Élite"
   },
@@ -188,7 +198,7 @@ export const QUESTIONS: Question[] = [
       "Comptes séparés avec répartition libre, préservant l'indépendance de chacun",
       "Je préfère ne pas du tout me préoccuper de l'aspect financier"
     ],
-    defaultCompat: [1], // B
+    cCode: "m", // index 1 -> "m"
     importance: "Critère important",
     level: "Niveau 14 - Élite"
   },
@@ -201,7 +211,7 @@ export const QUESTIONS: Question[] = [
       "Je mange et vis au gré de mes envies, sans me fixer de règles",
       "Ce n'est absolument pas une préoccupation pour moi"
     ],
-    defaultCompat: [0, 1], // A ou B
+    cCode: "xm", // index 0, 1 -> "xm"
     importance: "Critère important",
     level: "Niveau 15 - Maître"
   },
@@ -214,7 +224,7 @@ export const QUESTIONS: Question[] = [
       "Une relation harmonieuse mais préservant notre cocon de couple autonome",
       "Le plus de distance possible, je préfère qu'on reste uniquement entre nous"
     ],
-    defaultCompat: [1], // B
+    cCode: "m", // index 1 -> "m"
     importance: "Critère majeur",
     level: "Niveau 16 - Maître"
   },
@@ -227,7 +237,7 @@ export const QUESTIONS: Question[] = [
       "Je déconnecte volontiers pour accorder une attention exclusive à l'autre",
       "Je n'accorde aucune importance particulière à ce sujet"
     ],
-    defaultCompat: [0, 1], // A et B acceptés
+    cCode: "xm", // index 0, 1 -> "xm"
     importance: "Critère important",
     level: "Niveau 17 - Grand Maître"
   },
@@ -240,7 +250,7 @@ export const QUESTIONS: Question[] = [
       "Je les apprécie à l'extérieur mais je préfère ne pas en héberger",
       "Je ne souhaite absolument pas d'animaux dans mon environnement"
     ],
-    defaultCompat: [1, 2], // B ou C (Adapté à l'intelligence naturaliste de 0%)
+    cCode: "mk", // index 1, 2 -> "mk"
     importance: "Critère important",
     level: "Niveau 18 - Grand Maître"
   },
@@ -253,7 +263,7 @@ export const QUESTIONS: Question[] = [
       "Sympathique mais tout à fait secondaire pour moi",
       "Aucune, ce n'est vraiment pas ma sensibilité"
     ],
-    defaultCompat: [0, 1], // A et B (100% Créativité & Expression)
+    cCode: "xm", // index 0, 1 -> "xm"
     importance: "Critère majeur",
     level: "Niveau 19 - Légende"
   },
@@ -266,7 +276,7 @@ export const QUESTIONS: Question[] = [
       "Par simple curiosité ou jeu, pour voir ce qu'il en ressort",
       "Pour s'amuser temporairement sans projection future"
     ],
-    defaultCompat: [0], // A
+    cCode: "x", // index 0 -> "x"
     importance: "Critère suprême",
     level: "Niveau 20 - Destin"
   },
@@ -279,7 +289,7 @@ export const QUESTIONS: Question[] = [
       "Je suis prévoyante, j'aime investir et bâtir une autonomie financière (PEA, immobilier...)",
       "L'argent est tabou pour moi, je délègue entièrement cet aspect"
     ],
-    defaultCompat: [1], // B
+    cCode: "m", // index 1 -> "m"
     importance: "Critère stratégique",
     level: "Niveau 21 - Esprit Libre"
   },
@@ -292,7 +302,7 @@ export const QUESTIONS: Question[] = [
       "Je me sens rapidement négligée ou anxieuse s'il ne m'accorde pas toute son attention",
       "Je préfère que l'on partage chaque instant libre sans exception"
     ],
-    defaultCompat: [0], // A (Type Distant-Évitant / Besoin de solitude)
+    cCode: "x", // index 0 -> "x"
     importance: "Critère majeur",
     level: "Niveau 22 - Esprit Libre"
   },
@@ -305,7 +315,7 @@ export const QUESTIONS: Question[] = [
       "Je privilégie la sécurité d'un emploi salarié avec des horaires très fixes",
       "L'investissement personnel dans des projets me semble secondaire"
     ],
-    defaultCompat: [0, 1], // A et B (Soutien entrepreneurial)
+    cCode: "xm", // index 0, 1 -> "xm"
     importance: "Critère important",
     level: "Niveau 23 - Visionnaire"
   },
@@ -318,7 +328,7 @@ export const QUESTIONS: Question[] = [
       "Des échanges profonds sur les idées, la philosophie, la stratégie, la psychologie ou l'avenir",
       "Le silence partagé, je ne ressens pas le besoin de grandes discussions"
     ],
-    defaultCompat: [1], // B (Sage & Magicien / INTJ)
+    cCode: "m", // index 1 -> "m"
     importance: "Critère majeur",
     level: "Niveau 24 - Alchimiste"
   },
@@ -328,10 +338,10 @@ export const QUESTIONS: Question[] = [
     question: "Quelle est votre sensibilité aux cadres de vie calmes, comme la montagne ou la campagne ?",
     answers: [
       "J'y vis très bien, j'apprécie le calme, le grand air et la tranquillité (comme dans les Hautes-Alpes)",
-      "J'ai absolument besoin du dynamisme et du bruit continu des grandes villes",
+      "J'au absolument besoin du dynamisme et du bruit continu des grandes villes",
       "Je m'y rends uniquement de passage pour des séjours courts"
     ],
-    defaultCompat: [0, 2], // A et C (La Saulce friendly)
+    cCode: "xk", // index 0, 2 -> "xk"
     importance: "Critère de vie",
     level: "Niveau 25 - Sérénité"
   },
@@ -344,7 +354,7 @@ export const QUESTIONS: Question[] = [
       "Je me lasse et tente régulièrement de l'interrompre pour passer du temps à deux",
       "Je considère cela comme une perte de temps par rapport aux tâches ménagères"
     ],
-    defaultCompat: [0], // A
+    cCode: "x", // index 0 -> "x"
     importance: "Critère majeur",
     level: "Niveau 26 - L'Artiste"
   },
@@ -357,7 +367,7 @@ export const QUESTIONS: Question[] = [
       "La retenue, l'auto-analyse et une prise de recul logique avant d'en discuter calmement",
       "L'évitement permanent, faire semblant que rien ne s'est passé"
     ],
-    defaultCompat: [1], // B (Sois Fort / INTJ)
+    cCode: "m", // index 1 -> "m"
     importance: "Critère d'alignement",
     level: "Niveau 27 - Force Intérieure"
   },
@@ -370,7 +380,7 @@ export const QUESTIONS: Question[] = [
       "Je me focalise uniquement sur mes acquis professionnels actuels",
       "Je préfère le divertissement pur sans trop solliciter mon intellect"
     ],
-    defaultCompat: [0], // A (L'Épicurien curieux / Sage)
+    cCode: "x", // index 0 -> "x"
     importance: "Critère majeur",
     level: "Niveau 28 - Éveil"
   },
@@ -383,24 +393,41 @@ export const QUESTIONS: Question[] = [
       "Je n'y porte aucun intérêt particulier, je trouve cela fastidieux",
       "Je n'aime que les jeux fondés purement sur la chance ou le hasard"
     ],
-    defaultCompat: [0, 1], // A et B (Awalé/Jeux de stratégie)
+    cCode: "xm", // index 0, 1 -> "xm"
     importance: "Critère complice",
     level: "Niveau 29 - Stratège"
   },
   {
     id: 30,
-    title: "Autonomie & Fratrie",
-    question: "Que vous évoque une personne ayant grandi de manière très autonome dans une grande fratrie ?",
+    title: "Lieu d'habitation",
+    question: "Où habitez-vous ?",
     answers: [
-      "Une grande force de caractère, une résilience innée et une précieuse indépendance",
-      "Une personne sûrement trop rigide et difficile à apprivoiser",
-      "C'est un élément neutre qui n'indique rien sur sa personnalité"
+      "Dép. 05",
+      "Dép. limitrophe au 05",
+      "Extérieur au 05"
     ],
-    defaultCompat: [0, 2], // A et C
+    cCode: "xm", // index 0, 1 -> "xm"
     importance: "Critère suprême",
     level: "Niveau 30 - Destinée"
   }
 ];
+
+const decodeCompat = (code: string): number[] => {
+  const map: { [key: string]: number } = {
+    'x': 0, 'm': 1, 'k': 2, 'p': 3, 'a': 4, 't': 5, 'd': 6, 'h': 7, 'y': 8, 'v': 9
+  };
+  return code.split("").map(char => map[char] ?? 0);
+};
+
+export const QUESTIONS: Question[] = RAW_QUESTIONS.map(q => ({
+  id: q.id,
+  title: q.title,
+  question: q.question,
+  answers: q.answers,
+  defaultCompat: decodeCompat(q.cCode),
+  importance: q.importance,
+  level: q.level
+}));
 
 export const ENCOURAGING_MESSAGES = [
   "C'est un excellent début ! Voyons la suite...",
@@ -442,6 +469,5 @@ export const DEFAULT_PROFILE: Profile = {
     return acc;
   }, {} as { [id: number]: number[] }),
   secretCode: "EROS-2026",
-  messengerUsername: "eric.sotoca" // Can be filled or customized
+  messengerUsername: "eric.sotoca"
 };
-

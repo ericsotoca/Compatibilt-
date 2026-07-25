@@ -70,11 +70,12 @@ export default function App() {
     if (type === "fail") playFailSound();
   };
 
-  // Safe base64 encoding/decoding for Unicode query param
+  // Safe base64 encoding/decoding with XOR obfuscation to hide parameters from simple tools
   const encodeProfile = (p: Profile): string => {
     const str = JSON.stringify(p);
     const bytes = new TextEncoder().encode(str);
-    const binString = String.fromCodePoint(...bytes);
+    const obfuscatedBytes = bytes.map(b => b ^ 0x5A);
+    const binString = String.fromCodePoint(...obfuscatedBytes);
     return btoa(binString);
   };
 
@@ -82,7 +83,8 @@ export default function App() {
     try {
       const binString = atob(b64);
       const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0)!);
-      const str = new TextDecoder().decode(bytes);
+      const deobfuscatedBytes = bytes.map(b => b ^ 0x5A);
+      const str = new TextDecoder().decode(deobfuscatedBytes);
       return JSON.parse(str);
     } catch (e) {
       console.error("Failed to decode profile from URL:", e);
