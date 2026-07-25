@@ -302,18 +302,6 @@ export default function App() {
           >
             {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </button>
-
-          {/* Quick Create Link changed to 'Gérer le défi' */}
-          {gameState !== "create" && (
-            <button
-              onClick={openPasswordPrompt}
-              className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#c85a53] text-white hover:bg-[#b04a43] shadow-sm hover:shadow transition-all flex items-center gap-1 cursor-pointer"
-              id="btn-quick-create"
-            >
-              <Lock className="w-3.5 h-3.5" />
-              <span>Gérer le défi</span>
-            </button>
-          )}
         </div>
       </header>
 
@@ -335,25 +323,6 @@ export default function App() {
               <p className="text-sm md:text-base text-[#6b5854] max-w-md mx-auto leading-relaxed">
                 Ce défi comporte <span className="font-bold text-[#c85a53]">{QUESTIONS.length} questions</span> de plus en plus personnelles. Si tu partages 100% de ses critères de vie, tu obtiendras son <span className="font-semibold text-[#c85a53]">code secret de compatibilité</span> !
               </p>
-            </div>
-
-            {/* Rules preview container */}
-            <div className="w-full bg-[#fcfbf9] border border-[#f0eae6] rounded-xl p-4 text-left space-y-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#9c847f]">Règles secrètes du jeu</span>
-              <ul className="space-y-2.5 text-xs text-[#5c4d4a]">
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 mt-1.5 rounded-full bg-[#c85a53]" />
-                  <span>Le parcours est anonyme et confidentiel.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 mt-1.5 rounded-full bg-[#c85a53]" />
-                  <span>En cas d'incompatibilité, le jeu ne s'arrête pas immédiatement pour préserver le mystère des critères.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 mt-1.5 rounded-full bg-[#c85a53]" />
-                  <span>Tu ne sauras jamais quelle question a posé problème. Seul un accord à 100% dévoilera le code de contact.</span>
-                </li>
-              </ul>
             </div>
 
             {/* Buttons */}
